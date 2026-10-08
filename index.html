@@ -992,7 +992,7 @@
 <header>
     <div class="topbar">
         <strong>Next meeting</strong>
-        <span><span id="topbarDate">Second Thursday of the month</span>, 6:30 pm &middot; <span id="topbarLoc">Tri-Valley</span></span>
+        <span><span id="topbarDate">Thu, Nov 12, 2026</span>, 6:30 pm &middot; <span id="topbarLoc">Hopyard Alehouse, Pleasanton</span></span>
     </div>
     <nav class="nav" aria-label="Primary">
         <a href="#main" class="nav-logo" aria-label="Mad Zymurgists home">
@@ -1031,14 +1031,14 @@
                 </div>
                 <div class="meeting-right">
                     <span class="meeting-urgency" id="meetingUrgency" hidden>Tonight!</span>
-                    <span class="meeting-date" id="meetingDate">September 10</span>
+                    <span class="meeting-date" id="meetingDate">November 12, 2026</span>
                     <span class="meeting-time">6:30 &ndash; 8:30 pm</span>
                     <span class="meeting-loc"><strong id="meetingLoc">Hopyard Alehouse, Pleasanton</strong><span class="meeting-loc-note">The meeting spot rotates each month and is always posted here first.</span></span>
                 </div>
             </div>
             <div class="meeting-map" id="meetingMap">
-                <iframe id="mapFrame" title="Map of the next Mad Zymurgists meeting location" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-                <a class="map-open" id="mapOpen" href="https://www.google.com/maps" target="_blank" rel="noopener">Open in Google Maps &#8599;</a>
+                <iframe id="mapFrame" src="https://maps.google.com/maps?q=Hopyard%20Alehouse%2C%20Pleasanton%2C%20CA&amp;z=15&amp;output=embed" title="Map of the next Mad Zymurgists meeting location" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                <a class="map-open" id="mapOpen" href="https://www.google.com/maps/search/?api=1&amp;query=Hopyard%20Alehouse%2C%20Pleasanton%2C%20CA" target="_blank" rel="noopener">Open in Google Maps &#8599;</a>
             </div>
             <div class="meeting-map map-tbd" id="meetingMapTbd" hidden>
                 <span class="map-tbd-pin" aria-hidden="true">&#128205;</span>
@@ -1124,7 +1124,7 @@
                 </div>
                 <div class="event-body">
                     <h3>November Club Meeting</h3>
-                    <p>6:30 pm to 8:30 pm &middot; Location TBD, posted here once confirmed</p>
+                    <p>November 12, 2026 &middot; 6:30 pm to 8:30 pm &middot; Hopyard Alehouse, Pleasanton, CA</p>
                 </div>
                 <span class="event-arrow">&rarr;</span>
             </a>
@@ -1423,14 +1423,16 @@
         const MEETING_SCHEDULE = {
             '2026-9': 'Hopyard Alehouse, Pleasanton',
             '2026-10': { name: 'Heady Works, Livermore', address: '468 Franklin Lane, Unit B, Livermore, CA 94551' },
-            '2026-11': 'TBD'
+            '2026-11': 'Hopyard Alehouse, Pleasanton'
             // '2026-12': 'Venue Name, City',
             // '2027-1': 'Venue Name, City',
         };
         const TBD_TEXT = 'Location TBD, posted here soon';
 
         const now = new Date();
-        const mt = nextMeeting(now);
+        // Show the announced November meeting now, then keep automatic monthly rollover.
+        const announcedMeeting = new Date(2026, 10, 12, 18, 30);
+        const mt = nextMeeting(now < announcedMeeting ? announcedMeeting : now);
         const key = mt.getFullYear() + '-' + (mt.getMonth() + 1);
         const entry = MEETING_SCHEDULE[key];
         let rawLoc = '';
@@ -1444,8 +1446,8 @@
         }
         const hasLoc = !!rawLoc;
 
-        const long = mt.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-        const short = mt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const long = mt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const short = mt.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
         // ---- Tonight / Tomorrow urgency ----
         const d0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
